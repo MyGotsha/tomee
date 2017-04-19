@@ -17,7 +17,7 @@ ExecStop=/opt/tomee/bin/shutdown.sh
 
 User=tomee
 Group=tomee
-UMask=1055
+UMask=0007
 RestartSec=10
 Restart=always
 
