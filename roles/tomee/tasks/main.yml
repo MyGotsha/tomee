@@ -1,0 +1,128 @@
+- name: Création de l_utilisateur Tomee
+  user: name=tomee group=tomee home=/opt/tomee createhome=yes
+  become: True
+  become_method: sudo
+  
+- name: Création du groupe Tomee 
+  group: name=tomee
+  
+- name: Création du dossier Tomee
+  file: path=/opt/tomee state=directory
+  
+- name: Changer le propriétaire du dossier Tomee
+  file: path=/opt/tomee owner=tomee group=tomee state=directory recurse=yes
+
+- name: Changer le groupe propriétaire du dossier Tomee
+  shell: chgrp -R tomee /opt/tomee & chown -R tomee /opt/tomee
+
+- name: Changer le propriétaire du dossier Tomee
+  shell: chown -R tomee /opt/tomee
+      
+- name: Installation du JDK 8
+  package: name=openjdk-8-jdk-headless state=present 
+  
+- name: Téléchargement de Tomee
+  get_url: 
+    url: http://repo.maven.apache.org/maven2/org/apache/tomee/apache-tomee/7.0.3/apache-tomee-7.0.3-plus.tar.gz
+    dest: /opt/tomee/tomee.tar.gz
+
+- name: Extration des sous-dossiers de l_archive Tomee dans le répertoire Tomee 
+  command: /bin/tar xzvf /opt/tomee/tomee.tar.gz -C /opt/tomee --strip-components=1
+  
+- name: Changement de propriétaire du dossier /conf dans tomee
+  shell: chmod -R g+r /opt/tomee/conf
+
+- name: Téléchargement du fichier systemd sur le Git 
+  get_url: 
+    url: https://drive.google.com/open?id=0B7xxgy2RvDACcm04MmhQc1V1UVE
+    dest: /etc/systemd/system/tomee.service
+
+- name: Installation package manquant jsvc
+  shell: sudo apt-get install jsvc
+
+- name: Téléchargement du fichier setenv.sh 
+  get_url: 
+    url: https://drive.google.com/open?id=0B7xxgy2RvDACVDhDZXJBSHBmSHM
+    dest: /opt/tomee/bin/setenv.sh
+
+- name: Changement de propriétaire du document setenv.sh
+  shell: chmod +x /opt/tomee/bin/setenv.sh
+
+#- name: Téléchargement du fichier tomee dans /etc/init.d
+#  get_url: 
+#    url: https://drive.google.com/open?id=0B7xxgy2RvDACSGhLZ3B0clNKYWM
+#    dest: /etc/init.d/tomeeans.txt
+    
+- name: Changement de propriétaire du document tomee dans /etc/init.d
+  shell: chmod +x /etc/init.d/tomeeans.txt
+  
+- name: relance systemctl
+  shell: systemctl daemon-reload
+  
+- name: start tomee
+  shell: service tomeeans.txt start 
+
+- name: status
+  shell: service tomeeans.txt status
+
+    
+    
+    
+  
+  
+
+#- name: Mise à jour des droits sur le fichier sevenv.sh
+#  shell: chmod +x /opt/tomee/bin/setenv.sh
+
+  
+#- name: Suppression de l_archive pour gagner de la place
+#  shell: rm /opt/tomee/tomee.tar.gz
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
